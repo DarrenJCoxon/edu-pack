@@ -15,7 +15,11 @@ tool          xcrun notarytool 1.1.1 (Apple Command Line Tools)
 ```
 
 The certificate being present is why `tools/build-installer-app.sh` can sign
-without further setup.
+without further setup. The Team ID appears three times in the certificate subject:
+`UID`, `OU` and the display name, so it does not need to be looked up.
+
+The Apple ID must be the account that belongs to that team. Notarisation fails
+with `Invalid credentials` when the two do not match.
 
 ## Step 1 — create an app-specific password
 
@@ -35,7 +39,7 @@ shell history or in any file:
 
 ```bash
 xcrun notarytool store-credentials "edu-pack" \
-  --apple-id "darren@coxon.ai" \
+  --apple-id "coxondj@gmail.com" \
   --team-id "2J8K99KZC6" \
   --password "abcd-efgh-ijkl-mnop"
 ```
