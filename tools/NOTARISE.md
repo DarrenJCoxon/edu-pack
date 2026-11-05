@@ -102,6 +102,8 @@ No Terminal, no security settings, no right-click.
 
 | Message | Cause | Correction |
 |---|---|---|
+| `HTTP status code: 403`, "a required agreement is missing or has expired" | The team has not accepted the current Apple Developer Program License Agreement | The Account Holder signs in to <https://developer.apple.com/account> and accepts it, then retry |
+| `HTTP status code: 401` | Wrong app-specific password, or the Apple ID does not belong to the team | Regenerate the password under the correct Apple ID |
 | `status: Invalid` with "signature invalid" | The bundle was altered after signing | Rebuild; never edit the bundle after signing |
 | "The executable does not have the hardened runtime enabled" | `--options runtime` missing | The build script always passes it |
 | "Invalid credentials" | Wrong app-specific password, or the Apple ID | Regenerate the password; confirm the team ID |
@@ -112,6 +114,17 @@ Retrieve the full report for any submission:
 ```bash
 xcrun notarytool log <submission-id> --keychain-profile "edu-pack"
 ```
+
+## Reading the HTTP status
+
+- **401 Unauthorized** — the credentials are wrong. Regenerate the app-specific
+  password under the Apple ID that belongs to the team.
+- **403 Forbidden** — the credentials are correct and the team is not permitted.
+  Apple returns this when the Apple Developer Program License Agreement has not
+  been accepted or has expired. Authentication succeeded; authorisation did not.
+
+Only the Account Holder can accept the agreement. An Admin or Developer role
+cannot, which is worth checking first if the account is shared.
 
 ## Renewal
 
