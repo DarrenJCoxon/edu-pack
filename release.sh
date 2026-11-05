@@ -25,10 +25,10 @@ verify_body() {
   absent()  { if printf '%s' "$body" | grep -qF -- "$1"; then echo "  FAIL $2"; failures=$((failures + 1)); else echo "  ok   $2"; fi; }
 
   echo "verifying $label"
-  present "install.command" "names the installer"
+  present "Install edu-pack" "names the installer application"
   present "start a new chat" "tells the reader to start a new chat"
   present "deepseek.com/en/harness" "links to the harness download"
-  present "edu-pack-v" "names the file pattern to download"
+  present "edu-pack-installer-v" "names the file pattern to download"
   absent  '\.' "no escaped dots from shell escaping"
   absent  '\`' "no escaped backticks from shell escaping"
 
@@ -75,30 +75,37 @@ if gh release view "v${VERSION}" >/dev/null 2>&1; then
   exit 1
 fi
 
+# The artefact a teacher downloads is the notarised installer application, not a
+# zip of the source. Gatekeeper will not run an unsigned script, and a bare
+# .command cannot be notarised at all, so the pack is distributed as an
+# application that Apple has verified.
 mkdir -p "$ZIP_DIR"
-rm -f "$ZIP"
 
-# Exclude the git directory, dependencies, generated output and exam-board
-# copyright material. A release must not carry a specification or a paper.
-zip -rq "$ZIP" . \
-  -x ".git/*" "node_modules/*" "*.pdf" "*.docx" \
-     "briefs/*" "resources/*" \
-     "spec-map.json" "mark-weighting.json" "scheme-*.json" "coverage-matrix.*" \
-     ".DS_Store" "*/node_modules/*"
+VERSION="$VERSION" ./tools/build-installer-app.sh --notarise || {
+  echo "REFUSING: signing or notarisation failed." >&2
+  exit 1
+}
 
-echo "built ${ZIP} ($(du -h "$ZIP" | cut -f1), $(unzip -l "$ZIP" | tail -1 | awk '{print $2}') files)"
-
-# A reader who downloads the archive must receive the same instructions as a
-# reader of the repository. Compare the two rather than assuming they match.
-if ! unzip -p "$ZIP" README.md 2>/dev/null | cmp -s - README.md; then
-  echo "REFUSING: the archive README differs from the repository README." >&2
+ZIP="${ZIP_DIR}/edu-pack-installer-${VERSION}.zip"
+if [ ! -f "$ZIP" ]; then
+  echo "REFUSING: the notarised archive was not produced at ${ZIP}." >&2
   exit 1
 fi
-echo "  README in the archive matches the repository"
 
-if unzip -l "$ZIP" | grep -qiE '\.pdf|/papers/|specification\.txt'; then
+echo "built ${ZIP} ($(du -h "$ZIP" | cut -f1))"
+
+# A reader who downloads the application must receive the same instructions as a
+# reader of the repository. Compare the two rather than assuming they match.
+if ! unzip -p "$ZIP" "Install edu-pack.app/Contents/Resources/pack/README.md" 2>/dev/null | cmp -s - README.md; then
+  echo "REFUSING: the bundled README differs from the repository README." >&2
+  exit 1
+fi
+echo "  README in the application matches the repository"
+
+if ! unzip -l "$ZIP" | grep -qiE '\.pdf|/papers/|specification\.txt'; then
+  echo "  no exam-board material in the archive"
+else
   echo "REFUSING: the archive contains exam-board material." >&2
-  rm -f "$ZIP"
   exit 1
 fi
 
@@ -120,10 +127,11 @@ NOTES_FILE="$(mktemp)"
 ## Install
 
 1. **Get DeepSeek Harness.** If you do not have it: <https://www.deepseek.com/en/harness/>. Open it once, then **quit it**.
-2. **Download the zip below** — under *Assets*, the file whose name starts with `edu-pack-v`. Ignore the two *Source code* files. This page is not the download.
-3. **Unzip it.** Double-click the zip. You get a folder called `edu-pack`.
-4. **macOS blocks the installer** because it is unsigned, and right-clicking no longer bypasses that. Open Terminal, paste `xattr -d com.apple.quarantine ~/Downloads/edu-pack*/install.command`, press Return, then double-click `install.command`. On Windows, run `install.cmd` instead.
-5. **Open DeepSeek Harness again, start a new chat, and type `/`.**
+2. **Download the installer below** — under *Assets*, the file whose name starts with `edu-pack-installer-v`. Ignore the two *Source code* files.
+3. **Unzip it and double-click Install edu-pack.** A dialog reports when it has finished.
+4. **Open DeepSeek Harness, start a new chat, and type `/`.**
+
+The installer is signed and notarised by Apple, so macOS opens it without a warning.
 
 **Full instructions:** <https://github.com/DarrenJCoxon/edu-pack#readme>
 

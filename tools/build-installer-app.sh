@@ -131,4 +131,4 @@ rm -f "${ZIP}"
 /usr/bin/ditto -c -k --keepParent "${APP}" "${ZIP}"
 echo
 echo "notarised and stapled: ${ZIP}"
-/usr/bin/spctl -a -vvv -t exec "${APP}" 2>&1 | /usr/bin/sed 's/^/  /'
+/usr/sbin/spctl -a -vvv -t exec "${APP}" 2>&1 | /usr/bin/sed 's/^/  /'
