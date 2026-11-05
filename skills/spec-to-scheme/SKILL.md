@@ -5,6 +5,57 @@ description: Turn an exam specification and a set of mark schemes into a verifie
 
 # spec-to-scheme
 
+Two modes. Choosing the wrong one wastes the teacher's time and produces work they
+did not ask for.
+
+## Two modes
+
+**Plan mode — the default.** Use it when the teacher says "let's work through this
+together", "help me plan", or asks a question about a curriculum map. Do not run
+the pipeline. Hold a conversation: agree the units, the term structure, the lesson
+budget and the pedagogy, and propose a term-by-term map in the reply, in plain
+English. Run the stages only when the teacher asks for the build.
+
+**Build mode.** Use it when the teacher says "build it" or "run it", or has already
+agreed the inputs. Run the three stages and report as set out below.
+
+Running the pipeline during a planning conversation is the most common failure. It
+takes minutes, it writes files nobody asked for, and it answers a question the
+teacher had not finished asking.
+
+### Map and sequence are different outputs
+
+A **curriculum map** is term-level: which units in which term, and where
+assessment falls. A **lesson sequence** is lesson-level: one row per lesson. Ask
+which is required; do not assume the lesson sequence.
+
+## Stay in the project folder
+
+Work only inside the project directory the teacher opened. Do not read, search or
+move outside it — not Downloads, not Documents, not the home directory — even when a required
+file is absent. If an input is missing, say what is missing and
+ask for it, in one question.
+
+## Before running a stage
+
+Establish three facts first, and report each in one line:
+
+1. **The specification parses.** Run stage 1 alone and read the unit, topic and
+   point counts. If the specification does not use numbered points — Edexcel, OCR,
+   IB, and most arts subjects — the parser will find nothing. Say so before going
+   further, and ask how the department defines its units: by text, by paper, or by
+   theme.
+2. **The term structure.** Lesson count, number of terms, and which term is for
+   revision. Ask. Do not infer it from the calendar.
+3. **The mark schemes.** Which papers and which series. Without them the weighting
+   cannot be checked, and the result is a proposal rather than a verified plan.
+
+## Progress
+
+No step should run without a message for more than about ten seconds. Before a
+stage, state in one line what it will do and roughly how long it takes. If it is
+slow, say so as it begins rather than after it ends.
+
 Three stages, three gates. The gates are the product: each one exists because it
 caught a real error while this was being built.
 
@@ -141,5 +192,4 @@ auditable; they do not prove one structure teaches better.
 
 ## Outputs
 
-`spec-map.json`, `mark-weighting.json`, `scheme-<pedagogy>.json` — each carrying
-carries its parameters, so every number can be traced to the stage that produced it.
+`spec-map.json`, `mark-weighting.json`, `scheme-<pedagogy>.json` — each carries its parameters, so every number can be traced to the stage that produced it.

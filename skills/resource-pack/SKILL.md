@@ -5,6 +5,9 @@ description: Turn a verified lesson sequence into teaching resources and a Word 
 
 # resource-pack
 
+Work only inside the project directory the teacher opened. Do not read
+outside it, even when a file appears to be missing; ask for what you need.
+
 The hand-off between verified data and generated prose.
 
 A model writing a worksheet from a prompt alone invents syllabus content. Here it writes

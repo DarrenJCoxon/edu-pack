@@ -5,6 +5,9 @@ description: Prove that every specification point in a scheme of work is taught,
 
 # coverage-matrix
 
+Work only inside the project directory the teacher opened. Do not read
+outside it, even when a file appears to be missing; ask for what you need.
+
 Joins three files — the specification map, the mark weighting and a scheme of work
 — and answers two mechanical questions for every point:
 
