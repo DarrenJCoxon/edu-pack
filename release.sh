@@ -50,20 +50,28 @@ fi
 
 git push -q origin HEAD
 
-gh release create "v${VERSION}" "$ZIP" \
-  --title "v${VERSION}" \
-  --notes "${NOTES}
-
+# Build the notes in a quoted heredoc so markdown never passes through shell
+# escaping. Two earlier releases lost their backticks this way: inside a
+# double-quoted string an unmatched ` starts command substitution, which deletes
+# the text silently.
+NOTES_FILE="$(mktemp)"
+{
+  printf '%s\n\n' "$NOTES"
+  cat <<'BLOCK'
 ## Install
 
 1. **Get DeepSeek Harness.** If you do not have it: <https://www.deepseek.com/en/harness/>. Open it once, then **quit it**.
-2. **Download the zip below** — under *Assets*, the file whose name starts with \`edu-pack-v\`. Ignore the two *Source code* files. This page is not the download.
-3. **Unzip it.** Double-click the zip. You get a folder called \`edu-pack\`.
-4. **Double-click \`install.command\`** inside that folder. If macOS says it cannot check the file: right-click → **Open** → **Open**.
-5. **Open DeepSeek Harness again, start a new chat, and type \\`/\\`.**
+2. **Download the zip below** — under *Assets*, the file whose name starts with `edu-pack-v`. Ignore the two *Source code* files. This page is not the download.
+3. **Unzip it.** Double-click the zip. You get a folder called `edu-pack`.
+4. **Double-click `install.command`** inside that folder. If macOS says it cannot check the file: right-click → **Open** → **Open**.
+5. **Open DeepSeek Harness again, start a new chat, and type `/`.**
 
-**Full instructions, troubleshooting and uninstalling:** <https://github.com/DarrenJCoxon/edu-pack#readme>
+**Full instructions:** <https://github.com/DarrenJCoxon/edu-pack#readme>
 
-Tested against DeepSeek Harness 0.2.1-rc.5 on macOS. Does not include exam board specifications, past papers or mark schemes."
+Tested against DeepSeek Harness 0.2.1-rc.5 on macOS. Does not include exam board specifications, past papers or mark schemes.
+BLOCK
+} > "$NOTES_FILE"
+
+gh release create "v${VERSION}" "$ZIP" --title "v${VERSION}" --notes-file "$NOTES_FILE"
 
 echo "published https://github.com/DarrenJCoxon/edu-pack/releases/tag/v${VERSION}"
