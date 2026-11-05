@@ -1,6 +1,6 @@
 # Notarising the macOS installer
 
-Gatekeeper refuses to run an unsigned script. Notarising removes the warning: the
+Gatekeeper will not run an unsigned script. Notarising removes the warning: the
 application opens on a double-click with no dialog and no security setting to
 change.
 
