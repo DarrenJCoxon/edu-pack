@@ -12,6 +12,52 @@
 
 set -euo pipefail
 
+# ---------------------------------------------------------------------------
+# Read the published page back and check it, rather than trusting that what we
+# sent is what a reader sees. Three releases shipped a mangled page because a
+# backtick was eaten by the shell and nothing looked at the result.
+# ---------------------------------------------------------------------------
+verify_body() {
+  local body="$1" label="$2"
+  local failures=0
+
+  present() { if printf '%s' "$body" | grep -qF -- "$1"; then echo "  ok   $2"; else echo "  FAIL $2"; failures=$((failures + 1)); fi; }
+  absent()  { if printf '%s' "$body" | grep -qF -- "$1"; then echo "  FAIL $2"; failures=$((failures + 1)); else echo "  ok   $2"; fi; }
+
+  echo "verifying $label"
+  present "install.command" "names the installer"
+  present "start a new chat" "tells the reader to start a new chat"
+  present "deepseek.com/en/harness" "links to the harness download"
+  present "edu-pack-v" "names the file pattern to download"
+  absent  '\.' "no escaped dots from shell escaping"
+  absent  '\`' "no escaped backticks from shell escaping"
+
+  if [ "$failures" -gt 0 ]; then
+    echo
+    echo "VERIFICATION FAILED ($failures problem(s)). The page says:"
+    printf '%s\n' "$body" | head -20
+    echo
+    echo "Fix with: gh release edit <tag> --notes-file <file>"
+    return 1
+  fi
+  echo "verified: $label looks right"
+  return 0
+}
+
+# Check an existing release without publishing anything.
+if [ "${1:-}" = "--check" ]; then
+  TAG="${2:?usage: ./release.sh --check <tag>}"
+  verify_body "$(gh release view "$TAG" --json body --jq .body)" "$TAG"
+  exit $?
+fi
+
+# Check a body from a file, for testing the checks themselves.
+if [ "${1:-}" = "--check-body" ]; then
+  FILE="${2:?usage: ./release.sh --check-body <file>}"
+  verify_body "$(cat "$FILE")" "$FILE"
+  exit $?
+fi
+
 VERSION="${1:?usage: ./release.sh <version> \"<notes>\"}"
 NOTES="${2:-Release ${VERSION}}"
 
@@ -73,5 +119,16 @@ BLOCK
 } > "$NOTES_FILE"
 
 gh release create "v${VERSION}" "$ZIP" --title "v${VERSION}" --notes-file "$NOTES_FILE"
+
+# ---- Read it back ---------------------------------------------------------
+verify_body "$(gh release view "v${VERSION}" --json body --jq .body)" "v${VERSION}" || exit 1
+
+ASSETS="$(gh release view "v${VERSION}" --json assets --jq '.assets[].name')"
+if printf '%s' "$ASSETS" | grep -qF "$(basename "$ZIP")"; then
+  echo "  ok   the zip is attached"
+else
+  echo "  FAIL the zip is not attached: $ASSETS"
+  exit 1
+fi
 
 echo "published https://github.com/DarrenJCoxon/edu-pack/releases/tag/v${VERSION}"
