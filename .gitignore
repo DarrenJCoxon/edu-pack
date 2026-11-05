@@ -1,0 +1,22 @@
+# Generated output — never commit
+*.docx
+briefs/
+resources/
+spec-map.json
+mark-weighting.json
+scheme-*.json
+coverage-matrix.*
+
+# Exam board material is copyrighted. Do not publish specifications,
+# past papers or mark schemes. Keep them in a folder outside the repo.
+papers/
+*.pdf
+specification.txt
+aqa-*.txt
+
+# Node
+node_modules/
+npm-debug.log*
+
+# macOS
+.DS_Store

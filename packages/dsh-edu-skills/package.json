@@ -1,0 +1,24 @@
+{
+  "name": "@edu-pack/dsh-edu-skills",
+  "version": "0.1.0",
+  "description": "Registers edu-pack's planning skills with DeepSeek Harness",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": ["lib/index.js"],
+  "license": "MIT",
+  "dependencies": {
+    "yaml": "^2.4.2"
+  },
+  "dependenciesMeta": {},
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "~4.0.5",
+    "@deepseek-ai/dsh-skill": "*"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/dsh-skill": { "optional": true }
+  }
+}
