@@ -23,6 +23,8 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { yamlPath } from './bin/lib/yaml.mjs';
+
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 
 const args = {};
@@ -60,6 +62,7 @@ const profileDir = path.join(profilesDir, profile);
 const skillsDir = path.join(target, 'skills');
 
 console.log(`pack:    ${HERE}`);
+console.log(`platform: ${process.platform}${process.platform === 'win32' ? ' (not yet verified)' : ''}`);
 console.log(`target:  ${target}`);
 console.log(`profile: ${profile}`);
 
@@ -116,7 +119,7 @@ const entry = [
   '    - id: edu-skills',
   '      name: "@edu-pack/dsh-edu-skills"',
   '      config:',
-  `        assetRoot: "${skillsDir}"`,
+  `        assetRoot: ${yamlPath(skillsDir)}`,
   '',
 ].join('\n');
 
@@ -133,5 +136,7 @@ if (patch.includes('edu-skills')) {
 // harness's own runtime. Report this explicitly.
 console.log('dependencies: none required');
 
-console.log('\nRestart DeepSeek Harness, then start a new conversation and type "/"');
+const launcher = process.platform === 'win32' ? 'install.cmd' : 'install.command';
+console.log(`\nRestart DeepSeek Harness, then start a new conversation and type "/"`);
 console.log('to see: spec-to-scheme, coverage-matrix, resource-pack.');
+console.log(`(This platform's installer is ${launcher}.)`);

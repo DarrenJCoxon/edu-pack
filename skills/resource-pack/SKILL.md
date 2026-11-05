@@ -36,7 +36,7 @@ run, and do not request any installation:
 ### 1. Briefs
 
 ```bash
-~/.dsh/edu-pack/bin/run scripts/briefs.mjs --spec spec-map.json --weighting mark-weighting.json \
+<pack>/bin/run scripts/briefs.mjs --spec spec-map.json --weighting mark-weighting.json \
   --scheme scheme-spaced.json --from 1 --to 10 --out briefs
 ```
 

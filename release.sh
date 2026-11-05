@@ -122,12 +122,12 @@ NOTES_FILE="$(mktemp)"
 1. **Get DeepSeek Harness.** If you do not have it: <https://www.deepseek.com/en/harness/>. Open it once, then **quit it**.
 2. **Download the zip below** — under *Assets*, the file whose name starts with `edu-pack-v`. Ignore the two *Source code* files. This page is not the download.
 3. **Unzip it.** Double-click the zip. You get a folder called `edu-pack`.
-4. **Double-click `install.command`** inside that folder. If macOS says it cannot check the file: right-click → **Open** → **Open**.
+4. **Run the installer** inside that folder: `install.command` on macOS, `install.cmd` on Windows. On macOS, if the system says it cannot check the file: right-click → **Open** → **Open**.
 5. **Open DeepSeek Harness again, start a new chat, and type `/`.**
 
 **Full instructions:** <https://github.com/DarrenJCoxon/edu-pack#readme>
 
-Tested against DeepSeek Harness 0.2.1-rc.5 on macOS. Does not include exam board specifications, past papers or mark schemes.
+Verified on macOS against DeepSeek Harness 0.2.1-rc.5. Windows is written but not yet verified. Does not include exam board specifications, past papers or mark schemes.
 BLOCK
 } > "$NOTES_FILE"
 

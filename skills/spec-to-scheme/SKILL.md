@@ -12,22 +12,24 @@ caught a real error while this was being built.
 
 | Input | Format | Notes |
 |---|---|---|
-| Specification | text | Convert the PDF with `bin/pdf-to-text`. AQA-style numbering (`4.1.1.1`) parses cleanly; other boards need a parser tweak |
+| Specification | text | Convert the PDF with `bin/pdf-to-text.mjs`. AQA-style numbering (`4.1.1.1`) parses cleanly; other boards need a parser tweak |
 | Mark schemes | PDF | One per paper. Read with the bundled pdf.js; no extra software needed |
 | Term structure | count of lessons and weeks | Ask the department; do not guess |
 
 ## Run it
 
 ```bash
-~/.dsh/edu-pack/bin/run scripts/run.mjs --dir <project> --quiet \
+<pack>/bin/run scripts/run.mjs --dir <project> --quiet \
   --spec specification.txt \
   --papers "papers/*MS*.pdf" \
   --pedagogy spaced --lessons 132 --weeks 66
 ```
 
-Use `~/.dsh/edu-pack/bin/run` rather than `node`: it borrows the harness's own
-JavaScript runtime, so the user does not need Node.js installed. Run it from the
-project directory.
+Run scripts through the pack's launcher, not through `node`: on macOS
+`<pack>/bin/run`, on Windows `<pack>\bin\run.cmd`. The launcher uses the harness's
+own JavaScript runtime, so Node.js is not required. `<pack>` is the installed
+pack, normally `~/.dsh/edu-pack` (`%USERPROFILE%\.dsh\edu-pack` on Windows). Run it
+from the project directory.
 
 **Always pass `--quiet`.** It sends every stage's output to `build.log` instead of
 the conversation, so the teacher sees a result rather than a build.

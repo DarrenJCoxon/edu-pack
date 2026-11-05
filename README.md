@@ -9,6 +9,11 @@ Three helpers for teachers, inside DeepSeek Harness.
 
 The pipeline verifies its arithmetic before producing output. If the marks in the past papers do not reconcile, the pipeline stops and reports the discrepancy rather than producing a plan built on incorrect totals.
 
+## Which computers
+
+macOS is tested. Windows support is written but **not yet verified** — if you run
+the Windows installer, expect to report what happens.
+
 ## Install
 
 1. **Get DeepSeek Harness.** If you do not have it, download and install it from
@@ -24,9 +29,9 @@ The pipeline verifies its arithmetic before producing output. If the marks in th
 3. **Unzip it.** Double-click the zip in your Downloads folder. You get a folder
    called `edu-pack`.
 
-4. **Double-click `install.command`** inside that folder.
-   If your Mac says it cannot check the file: right-click it → **Open** → **Open**.
-   You only do this once.
+4. **Run the installer** inside that folder: `install.command` on macOS,
+   `install.cmd` on Windows. On macOS, if the system says it cannot check the
+   file: right-click → **Open** → **Open**. This is required once.
 
 5. **Open DeepSeek Harness again, start a new chat, and type `/`.**
 

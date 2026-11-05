@@ -28,9 +28,9 @@ append "$(grep -rInE "$PATTERN" --include='*.md' --exclude-dir=vendor --exclude-
 
 # 2. Code and scripts: comment lines only.
 COMMENTS="$(grep -rInE "$PATTERN" \
-  --include='*.mjs' --include='*.js' --include='*.py' --include='*.sh' \
+  --include='*.mjs' --include='*.js' --include='*.py' --include='*.sh' --include='*.cmd' \
   --exclude-dir=vendor --exclude-dir=.git . 2>/dev/null || true)"
-append "$(printf '%s\n' "$COMMENTS" | grep -E '^[^:]+:[0-9]+:[[:space:]]*(//|\*|/\*|#)' || true)"
+append "$(printf '%s\n' "$COMMENTS" | grep -iE '^[^:]+:[0-9]+:[[:space:]]*(//|\*|/\*|#|rem )' || true)"
 
 # 3. Extension-less helpers. This file is excluded: its own text quotes the
 #    prohibited words, and scanning it would report the rule against itself.
