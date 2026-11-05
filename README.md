@@ -11,19 +11,26 @@ It checks its own numbers before handing anything over. If the marks in the past
 papers do not add up, it stops and says so, rather than giving you a plan you
 cannot trust.
 
-## What you need
-
-DeepSeek Harness. Nothing else.
-
-If you do not have it: <https://www.deepseek.com/en/harness/>
-
 ## Install
 
-1. Open DeepSeek Harness once, then **quit it**.
-2. **Unzip** the download.
-3. **Double-click `install.command`.**
+1. **Get DeepSeek Harness.** If you do not have it, download and install it from
+   <https://www.deepseek.com/en/harness/>. Open it once, then **quit it**.
+
+2. **Download the zip.** On the
+   [latest release page](https://github.com/DarrenJCoxon/edu-pack/releases/latest),
+   under **Assets**, download the file ending in `.zip` — for example
+   `edu-pack-v0.3.0.zip`. That is the download, not this web page.
+
+3. **Unzip it.** Double-click the zip in your Downloads folder. You get a folder
+   called `edu-pack`.
+
+4. **Double-click `install.command`** inside that folder.
    If your Mac says it cannot check the file: right-click it → **Open** → **Open**.
-4. Open DeepSeek Harness again and start a **new chat**.
+   You only do this once.
+
+5. **Open DeepSeek Harness again, start a new chat, and type `/`.**
+
+You should see the three helpers in the list.
 
 ## Use it
 
