@@ -8,8 +8,9 @@ number it cannot reconcile**.
 
 ## Quick start
 
-**You need:** DeepSeek Harness (opened once), Node.js 20+, and `pdftotext`
-(`brew install poppler`). For the Word export only: Python 3 with `python-docx`.
+**You need:** [DeepSeek Harness](https://www.deepseek.com/en/harness/) — install
+it and open it once — plus Node.js 20+ and `pdftotext` (`brew install poppler`).
+For the Word export only: Python 3 with `python-docx`.
 
 1. **Quit DeepSeek Harness.**
 2. **Double-click `install.command`** — or run `node install.mjs`.
@@ -60,6 +61,9 @@ Two supporting scripts make batch generation safe:
   **filled in** — an empty "Covered?" column looks like provenance and is not.
 
 ## Installing
+
+If you do not have the harness yet, download it first:
+**<https://www.deepseek.com/en/harness/>** — install it, open it once, then quit it.
 
 ### What the installer does
 
