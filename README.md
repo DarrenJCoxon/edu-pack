@@ -30,8 +30,26 @@ the Windows installer, expect to report what happens.
    called `edu-pack`.
 
 4. **Run the installer** inside that folder: `install.command` on macOS,
-   `install.cmd` on Windows. On macOS, if the system says it cannot check the
-   file: right-click → **Open** → **Open**. This is required once.
+   `install.cmd` on Windows.
+
+   **macOS will not run `install.command` when double-clicked.** The file is
+   not signed by an identified developer, and macOS no longer offers a way past
+   that by right-clicking. Choose one:
+
+   *Terminal, one line* — open Terminal, paste this, press Return, then
+   double-click the installer:
+
+   ```bash
+   xattr -d com.apple.quarantine ~/Downloads/edu-pack*/install.command
+   ```
+
+   *Or ask DeepSeek Harness to do it* — start a new chat and paste:
+
+   > Install the edu-pack skills from the zip in my Downloads folder.
+
+   DeepSeek Harness runs commands directly rather than through Finder, so the
+   security check does not apply. It may ask for permission to write into
+   `~/.dsh`.
 
 5. **Open DeepSeek Harness again, start a new chat, and type `/`.**
 
@@ -53,8 +71,9 @@ You get a spreadsheet of lessons and a short report.
 **No helpers in the `/` list.** Start a new chat. Existing chats do not pick up
 new helpers.
 
-**"Cannot be opened" when you double-click.** Right-click the file → **Open** →
-**Open**. It only asks once.
+**"Apple could not verify install.command" when you double-click.** macOS blocks
+unsigned scripts, and right-clicking no longer bypasses it. Use the Terminal line
+in step 4, or ask DeepSeek Harness to install the pack.
 
 **It stops and says the marks do not add up.** The past papers are probably from
 a different exam board than the syllabus. Try another year, or another board.
@@ -74,6 +93,12 @@ Nothing here is legal advice.
 
 You get a spreadsheet of lessons and a short report. If your Mac is set up for it,
 you also get a Word document version.
+
+## Why the installer is blocked
+
+The installer is an unsigned shell script. Signing it and having Apple notarise it
+would remove the warning entirely, and requires a paid Apple Developer account.
+Until that is done, the two methods in step 4 are the available routes.
 
 ## More detail
 

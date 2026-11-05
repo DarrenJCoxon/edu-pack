@@ -24,7 +24,7 @@ HITS=""
 append() { [ -n "$1" ] && HITS="${HITS}${HITS:+$'\n'}$1"; return 0; }
 
 # 1. Prose: scanned in full.
-append "$(grep -rInE "$PATTERN" --include='*.md' --exclude-dir=vendor --exclude-dir=.git . 2>/dev/null || true)"
+append "$(grep -rInE "$PATTERN" --include='*.md' --include='*.txt' --exclude-dir=vendor --exclude-dir=.git . 2>/dev/null || true)"
 
 # 2. Code and scripts: comment lines only.
 COMMENTS="$(grep -rInE "$PATTERN" \
