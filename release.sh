@@ -133,6 +133,10 @@ BLOCK
 
 gh release create "v${VERSION}" "$ZIP" --title "v${VERSION}" --notes-file "$NOTES_FILE"
 
+# Keep the local repository's tags in step with the remote, so the installer app
+# reports the same version as the release.
+git fetch --tags --quiet 2>/dev/null || true
+
 # ---- Read it back ---------------------------------------------------------
 verify_body "$(gh release view "v${VERSION}" --json body --jq .body)" "v${VERSION}" || exit 1
 
