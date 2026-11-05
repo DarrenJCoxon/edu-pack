@@ -34,14 +34,14 @@ exam cohort"* and point at the numbers.
 
 Measured on one real specification (97 points, 132 lessons, 200 marks):
 
-| strategy | covered | marks | retrieval gap | topic switches | topics in first 8 weeks |
-|---|---|---|---|---|---|
-| blocked | 97/97 | 200 | 3.5 wk | 22.9% | 2 |
-| interleaved | 97/97 | 200 | 7.4 wk | 72.5% | 3 |
-| spaced | 97/97 | 200 | 16.3 wk | 64.1% | 4 |
-| spiral | 97/97 | 200 | 41.9 wk | 64.1% | 6 |
+| strategy | covered | marks | topics revisited | mean gap | worst gap | topic switches |
+|---|---|---|---|---|---|---|
+| blocked | 97/97 | 200 | 0/24 | — | — | 22.9% |
+| interleaved | 97/97 | 200 | 24/24 | 5.6 wk | 34 | 79.4% |
+| spaced | 97/97 | 200 | 24/24 | 9.8 wk | 44 | 49.6% |
+| spiral | 97/97 | 200 | 24/24 | 9.2 wk | 27 | 58.8% |
 
-All four verify identically on coverage and marks: the pedagogy changes *how* the
+All four verify identically on coverage and marks
 content is taught, not *what* is taught — and the tool proves that rather than
 asserting it.
 

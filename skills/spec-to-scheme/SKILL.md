@@ -109,10 +109,22 @@ lesson count is exact.
 
 | Value | Structure | Measured by |
 |---|---|---|
-| `blocked` | topic by topic | low topic-switch rate, short retrieval gap |
-| `interleaved` | round-robin within a unit | high switch rate |
-| `spaced` | retrieval at expanding intervals | mean retrieval gap in weeks |
-| `spiral` | three passes over the course | topics touched in the first 8 weeks |
+| `blocked` | topic by topic; consolidation inside each block | no course-level retrieval |
+| `interleaved` | round-robin within a unit | early, frequent revisits |
+| `spaced` | topics in order, retrieval starting later | longer gaps, still full coverage |
+| `spiral` | three passes over the course | broad early exposure |
+
+Two knobs control retrieval, and both are worth exposing to a department:
+
+- `--retrieval-share` (default 0.15) — the fraction of lessons given to cumulative
+  retrieval. Below about 0.1, coverage of all topics stops being possible.
+- `--retrieval-start` (default 0.3 for `spaced`, 0.05 otherwise) — how much of the
+  course is taught before retrieval begins. Raise it for longer gaps.
+
+Always report **how many topics were revisited** and the **worst** gap, not only
+the mean. An earlier version averaged over the topics that happened to receive
+retrieval, which made the mean look healthy while a third of the course was never
+revisited at all.
 
 The metrics measure **structure, not learning**. They make a departmental argument
 auditable; they do not prove one structure teaches better.
