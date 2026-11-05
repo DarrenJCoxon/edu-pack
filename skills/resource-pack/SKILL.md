@@ -17,6 +17,21 @@ pedagogy.** Nothing in a brief is inferred, so nothing in a resource can drift
 away from the specification — and every resource ends with a provenance table
 pointing back at its points.
 
+## If Python is not installed
+
+The Word export is the only part that needs Python. Check once, before writing
+anything:
+
+```bash
+python3 -c "import docx" 2>/dev/null && echo available || echo missing
+```
+
+If it is missing, **skip the document and say so in one line** — do not fail the
+run, and do not ask the user to install anything:
+
+> I've written the lessons and the sequence. The Word pack needs Python, which is
+> not on this Mac, so you have `scheme.csv` and `REPORT.md` instead.
+
 ## Two stages
 
 ### 1. Briefs

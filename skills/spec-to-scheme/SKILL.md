@@ -12,8 +12,8 @@ caught a real error while this was being built.
 
 | Input | Format | Notes |
 |---|---|---|
-| Specification | text from `pdftotext -layout` | AQA-style numbering (`4.1.1.1`) parses cleanly; other boards need a parser tweak |
-| Mark schemes | PDF | One per paper. Needs `pdftotext` (Poppler) because parsing depends on column positions — see below |
+| Specification | text | Convert the PDF with `bin/pdf-to-text`. AQA-style numbering (`4.1.1.1`) parses cleanly; other boards need a parser tweak |
+| Mark schemes | PDF | One per paper. Read with the bundled pdf.js; no extra software needed |
 | Term structure | count of lessons and weeks | Ask the department; do not guess |
 
 ## Run it

@@ -18,7 +18,6 @@
  *   node install.mjs [--dsh-home ~/.dsh] [--dry-run]
  */
 
-import { execFileSync } from 'node:child_process';
 import { cp, mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -71,7 +70,7 @@ if (dryRun) {
 
 // ---- 1. Copy the pack ----------------------------------------------------
 await mkdir(target, { recursive: true });
-for (const entry of ['skills', 'packages', 'bin']) {
+for (const entry of ['skills', 'packages', 'bin', 'vendor']) {
   await cp(path.join(HERE, entry), path.join(target, entry), {
     recursive: true,
     filter: (source) => !source.includes('node_modules'),
@@ -130,9 +129,9 @@ if (patch.includes('edu-skills')) {
 }
 
 // ---- Checks --------------------------------------------------------------
-let pdftotext = true;
-try { execFileSync('pdftotext', ['-v'], { stdio: 'ignore' }); } catch { pdftotext = false; }
-console.log(pdftotext ? 'pdftotext: found' : 'pdftotext: NOT FOUND — run "brew install poppler"');
+// Nothing to install: PDF reading uses vendored pdf.js and scripts run on the
+// harness's own runtime. Report that, because a teacher should know.
+console.log('dependencies: none required');
 
 console.log('\nRestart DeepSeek Harness, then start a new conversation and type "/"');
 console.log('to see: spec-to-scheme, coverage-matrix, resource-pack.');

@@ -6,43 +6,40 @@
  * the AO for each question, and the specification reference it examines. So
  * "where are the marks" is arithmetic on published data, not an opinion.
  *
- * This is the stage a retrieval tool cannot do. NotebookLM would summarise a
- * mark scheme; it cannot sum marks across papers, attribute them to
- * specification points, and compare that to how much content each unit contains.
+ * Extraction uses vendored pdf.js, which reports word coordinates — so this no
+ * longer needs Poppler installed. The parser is unchanged in spirit: it finds
+ * tokens by where they sit, not by how the text happens to be laid out.
  *
- * Usage: node build-mark-weighting.mjs papers/*MS*.pdf
+ * Usage: node weight.mjs papers/*MS*.pdf
  */
 
-import { execFileSync } from 'node:child_process';
-import { readFile, writeFile, mkdtemp } from 'node:fs/promises';
-import os from 'node:os';
+import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-const WORD_RE = /<word xMin="([\d.]+)" yMin="([\d.]+)" xMax="([\d.]+)" yMax="([\d.]+)">(.*?)<\/word>/gu;
-const PAGE_RE = /<page width="[\d.]+" height="[\d.]+">([\s\S]*?)<\/page>/gu;
+import { extractPages, rowsOf } from './pdf-words.mjs';
+
 const SPEC_RE = /^4\.\d{1,2}\.\d{1,2}\.\d{1,2}$/u;
 
-/** Group words into visual rows, tolerating small baseline differences. */
-function rowsOf(pageBody) {
-  const words = [...pageBody.matchAll(WORD_RE)].map((m) => ({
-    x: Number(m[1]), xEnd: Number(m[3]), y: Number(m[2]), text: m[5],
-  }));
-  words.sort((a, b) => a.y - b.y || a.x - b.x);
-
-  const rows = [];
-  for (const word of words) {
-    const last = rows[rows.length - 1];
-    if (last && Math.abs(last.y - word.y) < 3) last.words.push(word);
-    else rows.push({ y: word.y, words: [word] });
-  }
-  return rows.map((row) => row.words.sort((a, b) => a.x - b.x));
-}
+// Column bands, measured from AQA mark schemes. The mark column shifts a few
+// points between pages, so the band is wider than the alignment suggests, and
+// x >= 450 keeps numbers from the "Extra information" column out.
+const MARK_MIN_X = 450;
+const MARK_MAX_X = 481;
+const QUESTION_MAX_X = 100;
+const REFERENCE_MIN_X = 480;
 
 /**
- * Parse one mark scheme into question records.
- * Columns, measured from the document: Question ~69, Mark ~469, AO/Spec > 480.
+ * The mark column is right-aligned at roughly 475. Filtering on the right edge
+ * rather than a loose band keeps stray numbers from the "Extra information"
+ * column out of the total.
  */
-function parseMarkScheme(xml, paperId) {
+function markValue(row) {
+  const cell = row.find((w) => w.xEnd >= 462 && w.xEnd <= 482 && /^\d{1,2}$/u.test(w.text));
+  return cell === undefined ? null : Number(cell.text);
+}
+
+/** Parse one mark scheme into question records. */
+function parseMarkScheme(pages, paperId) {
   const questions = new Map();
   const statedTotals = new Map();
   let currentQ = null;
@@ -52,33 +49,29 @@ function parseMarkScheme(xml, paperId) {
     return questions.get(q);
   };
 
-  for (const pageMatch of xml.matchAll(PAGE_RE)) {
-    for (const row of rowsOf(pageMatch[1])) {
+  for (const page of pages) {
+    for (const row of rowsOf(page.words)) {
       const texts = row.map((w) => w.text);
-      // The mark column shifts a few points between pages (xEnd 469 on one page,
-      // 478 on another), so the band has to be wider than the alignment looks.
-      // xMin >= 450 keeps numbers from the "Extra information" column out.
-      const rightAlignedMark = (w) => w.x >= 450 && w.xEnd >= 462 && w.xEnd <= 482 && /^\d{1,2}$/u.test(w.text);
 
-      // "Total Question N ..... 10" states that question's own total.
-      if (texts.includes('Total') && texts.includes('Question')) {
-        const at = texts.indexOf('Question');
-        const q = texts.slice(at + 1).find((t) => /^\d{1,2}$/u.test(t));
-        const mark = row.filter(rightAlignedMark).pop();
-        if (q && mark) statedTotals.set(q.padStart(2, '0'), Number(mark.text));
+      // "Total Question N ..... 10" states that question's own total. Match on the
+      // joined text, because pdf.js may hand back "Total Question 1" as one item.
+      const totalMatch = texts.join(' ').match(/Total\s+Question\s+(\d{1,2})/u);
+      if (totalMatch) {
+        const mark = markValue(row);
+        if (mark !== null) statedTotals.set(totalMatch[1].padStart(2, '0'), mark);
         continue;
       }
 
-      // A sub-part label (01.1) sets the question that later rows belong to.
-      const part = row.find((w) => w.x < 100 && /^\d{2}\.\d{1,2}$/u.test(w.text));
+      // A sub-part label (01.1) sets the question later rows belong to.
+      const part = row.find((w) => w.x < QUESTION_MAX_X && /^\d{2}\.\d{1,2}$/u.test(w.text));
       if (part) currentQ = ensure(part.text.split('.')[0]);
       if (currentQ === null) continue;
 
-      const mark = row.find(rightAlignedMark);
-      if (mark) currentQ.marks += Number(mark.text);
+      const mark = markValue(row);
+      if (mark !== null) currentQ.marks += mark;
 
       for (const word of row) {
-        if (word.x <= 480) continue;
+        if (word.x <= REFERENCE_MIN_X) continue;
         if (/^AO[123]$/u.test(word.text)) currentQ.aos.add(word.text);
         if (SPEC_RE.test(word.text)) currentQ.refs.add(word.text);
       }
@@ -100,23 +93,19 @@ function parseMarkScheme(xml, paperId) {
     .sort((a, b) => a.q.localeCompare(b.q));
 }
 
-// Only PDFs are inputs; the runner may pass other flags alongside them.
 const files = process.argv.slice(2).filter((a) => a.toLowerCase().endsWith('.pdf'));
 if (files.length === 0) {
-  console.error('usage: node build-mark-weighting.mjs <mark-scheme.pdf...>');
+  console.error('usage: node weight.mjs <mark-scheme.pdf...>');
   process.exit(2);
 }
 
-const temp = await mkdtemp(path.join(os.tmpdir(), 'ms-'));
 const papers = [];
 
 for (const file of files) {
-  const xmlPath = path.join(temp, `${path.basename(file, '.pdf')}.xml`);
-  execFileSync('pdftotext', ['-bbox-layout', file, xmlPath]);
-  const xml = await readFile(xmlPath, 'utf8');
+  const pages = await extractPages(path.resolve(file));
   const match = path.basename(file).match(/AQA-(\d{5})([A-Z])-MS/u);
   const paperId = match ? `${match[1]}/${match[2]}` : path.basename(file);
-  const questions = parseMarkScheme(xml, paperId);
+  const questions = parseMarkScheme(pages, paperId);
   const total = questions.reduce((n, q) => n + q.marks, 0);
   const withRefs = questions.filter((q) => q.refs.length > 0).length;
   const mismatched = questions.filter((q) => q.totalsAgree === false).map((q) => q.q);

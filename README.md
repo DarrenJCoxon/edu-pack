@@ -8,18 +8,16 @@ number it cannot reconcile**.
 
 ## Quick start
 
-**You need:** [DeepSeek Harness](https://www.deepseek.com/en/harness/) — install
-it and open it once. Nothing else is required for the pack to load.
+**You need:** [DeepSeek Harness](https://www.deepseek.com/en/harness/). Install it,
+open it once, quit it. That is the whole list.
 
-Two optional extras change what it can do:
+PDF reading uses a bundled copy of pdf.js, and the scripts run on the JavaScript
+runtime inside the harness — so there is no Node.js, no Poppler and no Python to
+install.
 
-| Extra | What it unlocks | Without it |
-|---|---|---|
-| `pdftotext` (Poppler) | Reading mark schemes by column position | The specification still parses; mark weighting does not, so you get no scheme |
-| Python 3 + `python-docx` | The Word export | You get the `.csv` sequence and `REPORT.md` instead |
-
-`pdftotext` is the only one that blocks the workflow, and it is one command for
-whoever looks after the Macs: `brew install poppler`.
+One optional extra: the Word export needs Python 3 with `python-docx`. Without it
+you still get the `.csv` sequence and `REPORT.md`; the skill says so and carries on
+rather than failing at the end.
 
 1. **Quit DeepSeek Harness.**
 2. **Double-click `install.command`** — or run `node install.mjs`.
@@ -85,13 +83,12 @@ node install.mjs --dsh-home ~/.dsh
 `--dsh-home` defaults to `~/.dsh`, so you can usually just run `node install.mjs`.
 It performs four steps and then stops:
 
-1. **Copies the skills and packages** to `~/.dsh/edu-pack/`.
+1. **Copies the skills, packages, helpers and the bundled PDF library** to
+   `~/.dsh/edu-pack/`.
 2. **Installs the skill provider plugin** (`@edu-pack/dsh-edu-skills`) into the
    profile's `node_modules`, beside the other harness packages.
 3. **Appends one entry** to `~/.dsh/cordis.patch.yml` that inserts the plugin and
    points it at the skills directory.
-4. **Checks for `pdftotext`** and warns if it is missing.
-
 It does **not** touch your model providers, your API keys, or your conversations.
 It is idempotent: running it twice reports "already registered" and changes
 nothing.
@@ -157,8 +154,7 @@ You can also just start a **new conversation** and type `/`.
 | `node: command not found` | Node.js not installed | Install Node 20+; the installer tells you if it is missing |
 | Skills absent from `/` after restart | Patch entry missing, or the plugin did not load | Run `test/registration.mjs`; check `~/.dsh/cordis.patch.yml` contains `edu-skills` |
 | Skills absent even though the patch is right | You are in an *existing* conversation | Start a **new** one — the catalogue is built when a conversation starts |
-| `pdftotext: NOT FOUND` | Poppler not installed | `brew install poppler` |
-| Stage 1 finds 0 points | The PDF is a scan, not text | Run OCR first; `pdftotext` cannot read images |
+| Stage 1 finds 0 points | The PDF is a scan, not text | It needs OCR before it can be read |
 | Marks do not reconcile | The mark scheme is not AQA's layout | The parsers are AQA-shaped; other boards need their own |
 
 ### Updating
