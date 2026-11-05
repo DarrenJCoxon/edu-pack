@@ -367,6 +367,27 @@ if (args.compare) {
     lessons: result.lessons,
   }, null, 2)}\n`, 'utf8');
 
+  // A spreadsheet is what a department opens. Writing only JSON and then telling
+  // the reader the sequence is a CSV is a defect: the file they look for would
+  // not exist.
+  const escape = (value) => {
+    const text = value === undefined || value === null ? '' : String(value);
+    return /[",\n]/u.test(text) ? `"${text.replace(/"/gu, '""')}"` : text;
+  };
+  const rows = [['Lesson', 'Week', 'Type', 'Unit', 'Topic', 'Specification points', 'Marks at stake']];
+  for (const lesson of result.lessons) {
+    rows.push([
+      lesson.n,
+      lesson.week,
+      lesson.type,
+      lesson.unitTitle ?? '',
+      lesson.topicTitle ?? '',
+      (lesson.points ?? []).join(' '),
+      Math.round((lesson.marksAtStake ?? 0) * 10) / 10,
+    ]);
+  }
+  await writeFile(`scheme-${strategy}.csv`, `${rows.map((row) => row.map(escape).join(',')).join('\n')}\n`, 'utf8');
+
   console.log(`pedagogy: ${strategy} | ${TOTAL_LESSONS} lessons over ${WEEKS} weeks`);
   console.log(`verification: ${result.metrics.covered}/${result.metrics.specPoints} points, ${result.metrics.duplicated.length} duplicates, ${result.metrics.marks} marks`);
   console.log(`retrieval: ${result.metrics.retrievalLessons} lessons, ${result.metrics.topicsRevisited}/${result.metrics.topicsTotal} topics revisited, mean gap ${result.metrics.meanGap ?? '-'} weeks (worst ${result.metrics.maxGap ?? '-'})`);
