@@ -22,7 +22,7 @@ const SPEC_RE = /^4\.\d{1,2}\.\d{1,2}\.\d{1,2}$/u;
 
 // Column bands, measured from AQA mark schemes. The mark column shifts a few
 // points between pages, so the band is wider than the alignment suggests, and
-// x >= 450 keeps numbers from the "Extra information" column out.
+// x >= 450 excludes numbers belonging to the "Extra information" column.
 const MARK_MIN_X = 450;
 const MARK_MAX_X = 481;
 const QUESTION_MAX_X = 100;
@@ -30,7 +30,7 @@ const REFERENCE_MIN_X = 480;
 
 /**
  * The mark column is right-aligned at roughly 475. Filtering on the right edge
- * rather than a loose band keeps stray numbers from the "Extra information"
+ * rather than a loose band excludes stray numbers from the "Extra information"
  * column out of the total.
  */
 function markValue(row) {
@@ -116,7 +116,7 @@ for (const file of files) {
 }
 
 // Attribute each question's marks to the units/topics its spec references touch.
-// A question citing several points is split evenly, so totals stay honest.
+// A question citing several points is split evenly, so totals remain consistent.
 const byUnit = {};
 const byTopic = {};
 const byAo = {};

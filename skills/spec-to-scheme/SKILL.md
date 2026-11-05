@@ -37,8 +37,7 @@ their measured differences.
 
 ## What to report
 
-The person reading is a teacher or head of department, not a developer. They want
-the scheme and the one or two things that might surprise them. Report **at most**
+The person reading is a teacher or head of department, not a developer. The required output is the scheme and the one or two issues that need attention. Report **at most**
 this, in this order, and then stop:
 
 1. **One line** — how many lessons over how many weeks, how many specification
@@ -52,7 +51,7 @@ A good final message looks like this:
 >
 > Files: `scheme-spaced.csv` (the sequence) and `REPORT.md` (how it was built).
 >
-> Three things to check before you adopt it:
+> Three points to check before adopting it:
 > - Bioenergetics gets 31 lessons for 6 points and Ecology 12 for 21. That comes
 >   from one year's papers; another year may rank them differently.
 > - 15 of the 24 topics get no retrieval lesson under this structure.
@@ -62,7 +61,7 @@ A good final message looks like this:
 
 - gate names, pass/fail tables, or "all three gates passed"
 - parser mechanics — column positions, question numbering, PDF layout, "level of
-  response questions", anything about how a fix was made
+  response questions", details of how a correction was made
 - unit-level percentages, sensitivity tables, year-on-year comparisons
 - internal vocabulary: gate, reconcile, partition, denominator, synthesised,
   distribution, breadth metric
@@ -103,7 +102,7 @@ papers' own totals.
 lesson count is exact.
 
 > Caught a ceiling-based slice that taught 15 points twice, and a partition that
-> scheduled practice lessons before anything had been taught.
+> scheduled practice lessons before any content had been taught.
 
 ## Pedagogies
 
@@ -141,4 +140,4 @@ auditable; they do not prove one structure teaches better.
 ## Outputs
 
 `spec-map.json`, `mark-weighting.json`, `scheme-<pedagogy>.json` — each carrying
-its own parameters, so any number can be traced back to the stage that made it.
+carries its parameters, so every number can be traced to the stage that produced it.

@@ -1,7 +1,7 @@
 /**
  * PDF text extraction with coordinates, using vendored pdf.js.
  *
- * The mark-scheme parser needs to know *where* a word sits, not just what it says:
+ * The mark-scheme parser requires the position of each word, not only its text:
  * marks live in one column, specification references in another. That is why this
  * pipeline used `pdftotext -bbox-layout`, and why it needed Poppler installed —
  * which is where most teachers stopped.
@@ -12,7 +12,7 @@
 
 import { getDocument, GlobalWorkerOptions } from '../../../vendor/pdfjs/pdf.mjs';
 
-// pdf.js runs its parser in a worker; in Node it needs to know where that is.
+// pdf.js runs its parser in a worker; in Node the path must be supplied.
 GlobalWorkerOptions.workerSrc = new URL('../../../vendor/pdfjs/pdf.worker.mjs', import.meta.url).href;
 
 /**

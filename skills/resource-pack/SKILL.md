@@ -1,13 +1,13 @@
 ---
 name: resource-pack
-description: Turn a verified lesson sequence into teaching resources and a Word scheme of work. Use when a department wants actual lesson materials rather than a plan, or when generated resources must be traceable back to specific specification points. Produces per-lesson briefs, a resource per lesson, and a single .docx pack.
+description: Turn a verified lesson sequence into teaching resources and a Word scheme of work. Use when a department requires lesson materials rather than a plan, or when generated resources must be traceable back to specific specification points. Produces per-lesson briefs, a resource per lesson, and a single .docx pack.
 ---
 
 # resource-pack
 
 The hand-off between verified data and generated prose.
 
-A model writing a worksheet from a prompt invents its own syllabus. Here it writes
+A model writing a worksheet from a prompt alone invents syllabus content. Here it writes
 from a **brief** containing only what is already proven: the specification points
 this lesson must teach, their verbatim text, the marks at stake, and the exam
 questions that have examined exactly those points.
@@ -19,15 +19,14 @@ pointing back at its points.
 
 ## If Python is not installed
 
-The Word export is the only part that needs Python. Check once, before writing
-anything:
+The Word export is the only part that needs Python. Check once, before writing output:
 
 ```bash
 python3 -c "import docx" 2>/dev/null && echo available || echo missing
 ```
 
 If it is missing, **skip the document and say so in one line** — do not fail the
-run, and do not ask the user to install anything:
+run, and do not request any installation:
 
 > I've written the lessons and the sequence. The Word pack needs Python, which is
 > not on this Mac, so you have `scheme.csv` and `REPORT.md` instead.
@@ -66,10 +65,9 @@ the same JSON the gates approved, so the document cannot drift from the data.
 ## What the model must not do
 
 - **Introduce content beyond the specification points in the brief.** If a resource
-  needs something the brief doesn't contain, that's a stage-1 or stage-3 problem,
+  requires content that the brief does not contain, that's a stage-1 or stage-3 problem,
   not a licence to invent.
-- **Skip the provenance table.** It is the only thing that makes a generated
-  resource auditable later. An empty "covered?" column is a finding.
+- **Skip the provenance table.** It is the only element that makes a generated resource auditable later. An empty "covered?" column is a finding.
 - **Set homework on the same night.** The brief asks for retrieval four weeks
   later; massed practice is what the spacing analysis exists to avoid.
 

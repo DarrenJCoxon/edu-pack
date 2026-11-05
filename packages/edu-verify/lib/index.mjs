@@ -1,14 +1,13 @@
 /**
  * edu-verify — the part that stops a plausible answer being published.
  *
- * Every number a planning tool produces is derived from something else: a PDF, a
+ * Every number a planning tool produces is derived from a source: a PDF, a
  * mark scheme, an allocation. Each derivation can be wrong in ways that still
  * look right. A table of percentages is convincing whether or not its total is
  * 200 marks or 202.
  *
  * So verification is a library, not a habit. Each stage of a pipeline opens a
- * Gate, records what it checked, and `require()`s it before handing anything
- * downstream. A failed gate throws with the reason, rather than returning a
+ * Gate, records what it checked, and calls `require()` before the next stage reads its output. A failed gate throws with the reason, rather than returning a
  * tidier-looking result.
  *
  * The three checks that caught real bugs while building this:
@@ -132,7 +131,7 @@ export function verifyScheme(label, { allPoints, lessons, expectedLessons, expec
 }
 
 /**
- * Verify a decomposition, catching the failure that bit hardest: topics whose
+ * Verify a decomposition, catching the most consequential failure: topics whose
  * content sits directly under the heading and never gets numbered sub-points.
  *
  * @param {string} label

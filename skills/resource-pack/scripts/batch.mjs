@@ -69,7 +69,7 @@ const selected = scheme.lessons.filter((l) => l.n >= from && l.n <= to);
 const teachable = args['teach-only'] ? selected.filter((l) => l.type === 'teach') : selected.filter((l) => l.type !== 'assess');
 
 const gate = new Gate('batch briefs');
-gate.assert('there is something to generate', teachable.length > 0, `${teachable.length} lesson(s)`);
+gate.assert('at least one lesson is selected', teachable.length > 0, `${teachable.length} lesson(s)`);
 gate.assert('every lesson in the range exists in the scheme', selected.length > 0, `${selected.length} found`);
 gate.require();
 
@@ -158,7 +158,7 @@ function render({ lesson, points, questions, cleanSpecText }) {
   lines.push('');
   lines.push('## What to produce');
   lines.push('');
-  lines.push('1. **Learning objectives** — one per specification point, using its own verb.');
+  lines.push('1. **Learning objectives** — one per specification point, using the verb from that point.');
   lines.push('2. **Do-now** — three retrieval questions on prior content, with answers.');
   lines.push('3. **Exposition** — the minimum explanation that makes the specification text intelligible.');
   lines.push('4. **Worked example** — one fully worked question, with the mark scheme logic explicit.');
@@ -166,7 +166,7 @@ function render({ lesson, points, questions, cleanSpecText }) {
   lines.push('6. **Differentiation** — one scaffold, one extension within the specification.');
   lines.push('7. **Homework** — retrieval four weeks later, not the same night.');
   lines.push('');
-  lines.push('End with this provenance table, filled in honestly:');
+  lines.push('End with this provenance table, completed for each point:');
   lines.push('');
   lines.push('| Specification point | Covered? | Where in the resource |');
   lines.push('|---|---|---|');

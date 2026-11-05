@@ -36,7 +36,7 @@ test('tolerance allows floating point drift but not a real shortfall', () => {
   assert.equal(short.passed, false);
 });
 
-test('a missing item is named, not just counted', () => {
+test('a missing item is named, not only counted', () => {
   const gate = new Gate('coverage');
   gate.coversEverything('every point is taught', ['4.1.1', '4.2.1', '4.6.4'], new Set(['4.1.1']));
   assert.equal(gate.passed, false);
@@ -57,7 +57,7 @@ test('require() throws nothing when everything passes', () => {
   assert.equal(gate.require(), true);
 });
 
-test('a failed gate accumulates every failure, not just the first', () => {
+test('a failed gate accumulates every failure, not only the first', () => {
   const gate = new Gate('multi');
   gate.counted('lessons', 130, 132);
   gate.reconciled('marks', 188, 200);

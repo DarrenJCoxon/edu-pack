@@ -7,9 +7,7 @@ Three helpers for teachers, inside DeepSeek Harness.
   examined.
 - **resource-pack** — writes lesson materials and a Word document.
 
-It checks its own numbers before handing anything over. If the marks in the past
-papers do not add up, it stops and says so, rather than giving you a plan you
-cannot trust.
+The pipeline verifies its arithmetic before producing output. If the marks in the past papers do not reconcile, the pipeline stops and reports the discrepancy rather than producing a plan built on incorrect totals.
 
 ## Install
 
@@ -45,7 +43,7 @@ Put the syllabus and some past papers in one folder, open that folder, and ask:
 
 You get a spreadsheet of lessons and a short report.
 
-## If something goes wrong
+## If a step fails
 
 **No helpers in the `/` list.** Start a new chat. Existing chats do not pick up
 new helpers.
@@ -56,13 +54,11 @@ new helpers.
 **It stops and says the marks do not add up.** The past papers are probably from
 a different exam board than the syllabus. Try another year, or another board.
 
-**Nothing happens at all.** Open DeepSeek Harness once first — the installer needs
-it there before it can add anything to it.
+**Nothing happens at all.** Open DeepSeek Harness once before installing. The installer requires its home directory to exist.
 
 ## Before you use the output
 
-**Check it.** The tool checks its own arithmetic. It cannot know your class, your
-tier or your pupils.
+**Review the output.** The checks cover arithmetic and coverage. They cannot assess suitability for a class, a tier or individual pupils.
 
 **Do not publish a scheme it produces.** They quote the exam board's own wording,
 which is the board's copyright, not ours. Use them in school.

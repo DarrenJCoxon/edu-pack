@@ -3,7 +3,7 @@
 Export the verified pipeline output as a Word document.
 
 A scheme of work that lives only in JSON is not a scheme of work. This builds the
-artefact a department actually keeps: the parameters and verification record, the
+artefact a department retains: the parameters and verification record, the
 marks-per-unit analysis, the full lesson sequence, the coverage summary, and the
 exemplar lesson — all from the same files the gates approved, so the document
 cannot drift from the data.
@@ -149,7 +149,7 @@ def main():
 
     doc.add_paragraph()
     doc.add_paragraph(
-        "Every figure in this document was produced by a pipeline that refuses to publish "
+        "Every figure in this document was produced by a pipeline that does not publish "
         "unreconciled totals. The mark weighting reconciles to the papers' own totals, and "
         "every specification point is taught exactly once."
     )

@@ -25,7 +25,8 @@ if [ ! -f "$PDF" ]; then
   exit 2
 fi
 
-# Prefer pdftotext when it exists: it keeps layout, which is better for everything.
+# Prefer pdftotext when available: it preserves layout, which the specification
+# parser handles more reliably than a reading-order extraction.
 if command -v pdftotext >/dev/null 2>&1; then
   exec pdftotext -layout -enc UTF-8 "$PDF" -
 fi

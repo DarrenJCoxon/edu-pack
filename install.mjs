@@ -2,7 +2,7 @@
 /**
  * Install the edu-pack skills into a DeepSeek Harness home.
  *
- * Three things happen:
+ * The installer performs three steps:
  *   1. the pack is copied to `<home>/edu-pack`
  *   2. the skill-provider plugin is copied into the profile's node_modules
  *   3. a home-patch entry inserts that plugin
@@ -130,7 +130,7 @@ if (patch.includes('edu-skills')) {
 
 // ---- Checks --------------------------------------------------------------
 // Nothing to install: PDF reading uses vendored pdf.js and scripts run on the
-// harness's own runtime. Report that, because a teacher should know.
+// harness's own runtime. Report this explicitly.
 console.log('dependencies: none required');
 
 console.log('\nRestart DeepSeek Harness, then start a new conversation and type "/"');

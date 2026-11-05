@@ -44,7 +44,7 @@ verify_body() {
   return 0
 }
 
-# Check an existing release without publishing anything.
+# Check an existing release without publishing.
 if [ "${1:-}" = "--check" ]; then
   TAG="${2:?usage: ./release.sh --check <tag>}"
   verify_body "$(gh release view "$TAG" --json body --jq .body)" "$TAG"
@@ -65,6 +65,11 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 ZIP_DIR="../dist"
 ZIP="${ZIP_DIR}/edu-pack-v${VERSION}.zip"
 
+# The writing rule is enforced, not advisory.
+if [ -x bin/check-language ]; then
+  bin/check-language || { echo "Refusing to release: correct the violations above." >&2; exit 1; }
+fi
+
 if gh release view "v${VERSION}" >/dev/null 2>&1; then
   echo "Release v${VERSION} already exists." >&2
   exit 1
@@ -73,8 +78,8 @@ fi
 mkdir -p "$ZIP_DIR"
 rm -f "$ZIP"
 
-# Exclude the git directory, dependencies, generated output, and anything that is
-# exam-board copyright. A release must not carry a specification or a paper.
+# Exclude the git directory, dependencies, generated output and exam-board
+# copyright material. A release must not carry a specification or a paper.
 zip -rq "$ZIP" . \
   -x ".git/*" "node_modules/*" "*.pdf" "*.docx" \
      "briefs/*" "resources/*" \
@@ -82,6 +87,14 @@ zip -rq "$ZIP" . \
      ".DS_Store" "*/node_modules/*"
 
 echo "built ${ZIP} ($(du -h "$ZIP" | cut -f1), $(unzip -l "$ZIP" | tail -1 | awk '{print $2}') files)"
+
+# A reader who downloads the archive must receive the same instructions as a
+# reader of the repository. Compare the two rather than assuming they match.
+if ! unzip -p "$ZIP" README.md 2>/dev/null | cmp -s - README.md; then
+  echo "REFUSING: the archive README differs from the repository README." >&2
+  exit 1
+fi
+echo "  README in the archive matches the repository"
 
 if unzip -l "$ZIP" | grep -qiE '\.pdf|/papers/|specification\.txt'; then
   echo "REFUSING: the archive contains exam-board material." >&2

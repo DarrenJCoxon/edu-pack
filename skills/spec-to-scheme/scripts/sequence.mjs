@@ -285,7 +285,7 @@ function build(strategy) {
 
   lessons.forEach((l, i) => { l.n = i + 1; l.week = Math.floor(i / LESSONS_PER_WEEK) + 1; });
 
-  // ---- Verification and honest metrics ----------------------------------
+  // ---- Verification and reported metrics ----------------------------------
   const all = topics.flatMap((t) => t.points);
   const counts = new Map();
   for (const l of lessons) for (const p of l.points) counts.set(p, (counts.get(p) ?? 0) + 1);

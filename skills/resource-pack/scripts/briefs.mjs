@@ -2,7 +2,7 @@
 /**
  * Lesson briefs — the hand-off between verified data and generated prose.
  *
- * A model writing a worksheet from a prompt invents its own syllabus. Here it
+ * A model writing a worksheet from a prompt alone invents syllabus content. Here it
  * receives a brief containing only what is already proven: the specification
  * points this lesson must teach, their verbatim text, the marks at stake, and
  * the exam questions that have historically examined exactly those points.
@@ -181,7 +181,7 @@ function render(brief) {
   lines.push('6. **Differentiation** — one scaffold for a pupil who is stuck, one extension that does not go beyond the specification.');
   lines.push('7. **Homework** — one task that re-tests this lesson four weeks later (spacing), not the same night.');
   lines.push('');
-  lines.push('End the resource with this table, filled in honestly:');
+  lines.push('End the resource with this table, completed for each point:');
   lines.push('');
   lines.push('| Specification point | Covered? | Where in the resource |');
   lines.push('|---|---|---|');

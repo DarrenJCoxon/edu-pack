@@ -3,7 +3,7 @@
  * Stage 1 — specification decomposition.
  *
  * Turns an AQA specification (pdftotext -layout output) into a structured map:
- * units -> topics -> specification points, each with its own text. Everything
+ * units -> topics -> specification points, each with its specification text. Everything
  * downstream (mark weighting, sequencing, coverage matrix) reads this file, so a
  * mistake here is inherited by everything else — which is why the parser reports
  * what it dropped rather than silently discarding it.

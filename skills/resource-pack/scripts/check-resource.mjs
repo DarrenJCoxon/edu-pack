@@ -63,7 +63,7 @@ for (const [name, pattern] of SECTIONS) {
   gate.assert(`has a ${name} section`, pattern.test(resource), pattern.test(resource) ? 'present' : 'absent');
 }
 
-// 3. The provenance table must be filled in, not just present.
+// 3. The provenance table must be filled in, not merely present.
 const tableRows = [...resource.matchAll(/^\|\s*(\d+(?:\.\d+)+)[^|]*\|([^|]*)\|([^|]*)\|/gmu)];
 if (tableRows.length === 0) {
   gate.assert('the provenance table has a row per point', false, 'no rows matched "| point | covered? | where |"');

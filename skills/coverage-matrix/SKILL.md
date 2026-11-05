@@ -1,6 +1,6 @@
 ---
 name: coverage-matrix
-description: Prove that every specification point in a scheme of work is taught, and show which points the mark schemes actually examine. Use when a department wants to audit a scheme, when a head of department asks "does this cover the spec?", or when someone needs evidence that a plan is complete rather than merely plausible.
+description: Prove that every specification point in a scheme of work is taught, and show which points the mark schemes actually examine. Use when a department requires an audit of a scheme, when a head of department asks "does this cover the spec?", or when someone needs evidence that a plan is complete rather than merely plausible.
 ---
 
 # coverage-matrix
@@ -27,9 +27,9 @@ the mark schemes parsed and joined to the specification across a whole course.
 Emits `coverage-matrix.md` (for a human) and `coverage-matrix.json` (for a
 dashboard or a DPIA-style evidence pack).
 
-## What it refuses to do
+## What the checks prevent
 
-It runs the same gates as `spec-to-scheme` before writing anything: lesson count,
+It runs the same gates as `spec-to-scheme` before writing output: lesson count,
 full coverage, no duplicates, marks reconciled, and each point taught in exactly
 one lesson. If any of those fail, no matrix is written — a partial matrix is worse
 than none, because it looks complete.

@@ -3,7 +3,7 @@
  * spec-to-scheme — one command, three stages, three gates.
  *
  * The stages do the work; this runner enforces the gates between them using
- * edu-verify, and refuses to hand a suspicious output to the next stage. That
+ * edu-verify, and does not pass suspicious output to the next stage. That
  * ordering matters: a stage that writes first and checks later has already
  * published a wrong artefact.
  *
@@ -39,7 +39,7 @@ for (let i = 2; i < process.argv.length; i += 1) {
 const dir = path.resolve(args.dir ?? '.');
 
 // A teacher should see the result, not the machinery. In quiet mode every stage's
-// chatter goes to build.log instead of the conversation, and this script prints
+// output goes to build.log instead of the conversation, and this script prints
 // three lines at the end.
 const quiet = args.quiet === true;
 const logPath = path.join(dir, 'build.log');

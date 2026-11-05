@@ -2,8 +2,7 @@
 /**
  * Does the installed bundle actually put its skills in front of the model?
  *
- * The patch composing correctly proves only that a YAML entry loaded. The thing
- * that matters is whether the skills reach the system prompt, because a skill
+ * The patch composing correctly proves only that a YAML entry loaded. The relevant question is whether the skills reach the system prompt, because a skill
  * that is installed but never surfaced is indistinguishable from one that does
  * not exist — and it fails silently, which is worse.
  *

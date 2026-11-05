@@ -1,0 +1,51 @@
+#!/bin/bash
+# Enforce the project writing rule.
+#
+#   No casual or vague language. No anthropomorphism. Plain professional English.
+#
+# "Thing" is not a noun in this project. A pipeline does not want, think, know,
+# decide or refuse; it produces output, reports a discrepancy or halts.
+#
+# The rule applies to prose and to comments. Source identifiers are not natural
+# language — `known` as a variable name is not a writing violation — so code files
+# are scanned for comment lines only.
+#
+# Third-party code under vendor/ is excluded. It is not ours to edit.
+#
+# Usage:  bin/check-language        # exit 1 if a violation is found
+
+set -uo pipefail
+
+cd "$(dirname "${BASH_SOURCE[0]}")/.." || exit 2
+
+PATTERN='\bthing(s)?\b|\bstuff\b|\bsomething\b|\banything\b|\bbit\b|\bjust\b|\bsimply\b|\bpretty\b|\breally\b|\bquite\b|\bwant(s|ed|ing)?\b|\bthink(s|ing)?\b|\bthought\b|\bknow(s|n|ing)?\b|\bkeeps?\b|\btries\b|\btrying\b|\bdecides?\b|\bbelieves?\b|\blearns?\b|\bremembers?\b|\bhonest(ly)?\b|\brefus(e|es|ed)\b|\bits own\b|\bnoisy\b|\bchatter\b'
+
+HITS=""
+append() { [ -n "$1" ] && HITS="${HITS}${HITS:+$'\n'}$1"; return 0; }
+
+# 1. Prose: scanned in full.
+append "$(grep -rInE "$PATTERN" --include='*.md' --exclude-dir=vendor --exclude-dir=.git . 2>/dev/null || true)"
+
+# 2. Code and scripts: comment lines only.
+COMMENTS="$(grep -rInE "$PATTERN" \
+  --include='*.mjs' --include='*.js' --include='*.py' --include='*.sh' \
+  --exclude-dir=vendor --exclude-dir=.git . 2>/dev/null || true)"
+append "$(printf '%s\n' "$COMMENTS" | grep -E '^[^:]+:[0-9]+:[[:space:]]*(//|\*|/\*|#)' || true)"
+
+# 3. Extension-less helpers. This file is excluded: its own text quotes the
+#    prohibited words, and scanning it would report the rule against itself.
+for file in bin/run bin/pdf-to-text install.command; do
+  [ -f "$file" ] || continue
+  append "$(grep -nE "$PATTERN" "$file" 2>/dev/null | sed "s|^|$file:|" || true)"
+done
+
+if [ -n "$HITS" ]; then
+  echo "Writing rule violations:"
+  printf '%s\n' "$HITS" | grep -v '^[[:space:]]*$' | sed 's|^\./||'
+  echo
+  echo "Rule: no casual or vague language, no anthropomorphism, plain professional English."
+  exit 1
+fi
+
+echo "language check: clean"
+exit 0

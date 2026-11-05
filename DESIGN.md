@@ -5,15 +5,15 @@ end-to-end run produces. The README covers installing and using it.
 
 ## The principle
 
-Every figure a planning tool produces is derived from something else: a PDF, a
+Every figure a planning tool produces is derived from a source: a PDF, a
 mark scheme, an allocation. Each derivation can be wrong in a way that still looks
 right. A table of percentages is equally convincing whether its total is 200 marks
 or 202.
 
 So verification is a library (`packages/edu-verify`), not a habit. Each stage
-opens a Gate, records what it checked, and refuses to hand anything downstream
+opens a Gate, records what it checked, and withholds output from the next stage
 until it passes. That is the whole difference between this and a chat tool:
-**the tool has a model of its own completeness, and it stops.**
+**each stage checks its output against an independent total and halts when the check fails.**
 
 Three real failures were caught this way while the first two skills were built:
 
@@ -52,7 +52,7 @@ Six modules, one per skill, each ending with "now try to break it":
 1. **Read a specification as data** — decompose it; find what your parser drops.
 2. **Find the marks** — reconcile before you rank; watch a plausible table fail.
 3. **Choose a pedagogy** — compare four structures on your own course.
-4. **Prove coverage** — the matrix, and what "not examined" really means.
+4. **Prove coverage** — the matrix, and what "not examined" means.
 5. **Build resources** — from verified lessons, not from a blank prompt.
 6. **Ship it to colleagues** — skills as the unit of professional sharing.
 
@@ -104,7 +104,7 @@ Run once, from the unzipped folder:
 node install.mjs --dsh-home ~/.dsh
 ```
 
-`--dsh-home` defaults to `~/.dsh`, so you can usually just run `node install.mjs`.
+`--dsh-home` defaults to `~/.dsh`, so `node install.mjs` requires no argument.
 It performs four steps and then stops:
 
 1. **Copies the skills, packages, helpers and the bundled PDF library** to
@@ -131,7 +131,7 @@ route works; the plugin route works on both.
 
 ### Manual install
 
-If you would rather not run the script, do the same four things by hand:
+To install without the script, perform the same four steps manually:
 
 ```bash
 cp -R skills packages ~/.dsh/edu-pack/
@@ -168,7 +168,7 @@ appear in the system prompt — no model involved:
 RESULT: PASS — skills are surfaced to the model
 ```
 
-You can also just start a **new conversation** and type `/`.
+Start a **new conversation** and type `/`.
 
 ### Troubleshooting
 
