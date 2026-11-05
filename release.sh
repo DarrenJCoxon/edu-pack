@@ -56,12 +56,12 @@ gh release create "v${VERSION}" "$ZIP" \
 
 ## Install
 
-1. **You need DeepSeek Harness** — install it first if you have not: <https://www.deepseek.com/en/harness/>. Open it once, then quit it.
-2. **Download \`$(basename "$ZIP")\` below** and unzip it.
-3. **Double-click \`install.command\`.** On macOS the first double-click is blocked: right-click → Open.
-4. **Reopen DeepSeek Harness**, start a **new** conversation, and type \`/\` — you should see \`spec-to-scheme\`, \`coverage-matrix\` and \`resource-pack\`.
+You need DeepSeek Harness. Nothing else.
 
-You also need Node.js 20+ and \`pdftotext\` (\`brew install poppler\`). Python 3 with \`python-docx\` is only for the Word export.
+1. **Open DeepSeek Harness once, then quit it.** If you do not have it: <https://www.deepseek.com/en/harness/>
+2. **Unzip this download.**
+3. **Double-click \`install.command\`.** If your Mac says it cannot check the file: right-click → **Open** → **Open**.
+4. **Open DeepSeek Harness again, start a new chat, and type \`/\`.**
 
 **Full instructions, troubleshooting and uninstalling:** <https://github.com/DarrenJCoxon/edu-pack#readme>
 
