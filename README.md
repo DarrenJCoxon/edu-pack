@@ -16,10 +16,12 @@ cannot trust.
 1. **Get DeepSeek Harness.** If you do not have it, download and install it from
    <https://www.deepseek.com/en/harness/>. Open it once, then **quit it**.
 
-2. **Download the zip.** On the
-   [latest release page](https://github.com/DarrenJCoxon/edu-pack/releases/latest),
-   under **Assets**, download the file ending in `.zip` — for example
-   `edu-pack-v0.3.0.zip`. That is the download, not this web page.
+2. **Download the zip.** Open the
+   [latest release page](https://github.com/DarrenJCoxon/edu-pack/releases/latest)
+   and, under **Assets**, download the file whose name starts with
+   **`edu-pack-v`** (for example `edu-pack-v0.3.1.zip`). Ignore the two files
+   called *Source code* — you do not need those. This web page is not the
+   download.
 
 3. **Unzip it.** Double-click the zip in your Downloads folder. You get a folder
    called `edu-pack`.

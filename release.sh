@@ -57,7 +57,7 @@ gh release create "v${VERSION}" "$ZIP" \
 ## Install
 
 1. **Get DeepSeek Harness.** If you do not have it: <https://www.deepseek.com/en/harness/>. Open it once, then **quit it**.
-2. **Download the zip below** — the file under *Assets* ending in \`.zip\`. That is the download, not this page.
+2. **Download the zip below** — under *Assets*, the file whose name starts with \`edu-pack-v\`. Ignore the two *Source code* files. This page is not the download.
 3. **Unzip it.** Double-click the zip. You get a folder called \`edu-pack\`.
 4. **Double-click \`install.command\`** inside that folder. If macOS says it cannot check the file: right-click → **Open** → **Open**.
 5. **Open DeepSeek Harness again, start a new chat, and type \\`/\\`.**
