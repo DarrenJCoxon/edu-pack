@@ -17,7 +17,7 @@ the mark schemes parsed and joined to the specification across a whole course.
 ## Run it
 
 ```bash
-node scripts/matrix.mjs \
+~/.dsh/edu-pack/bin/run scripts/matrix.mjs \
   --spec spec-map.json \
   --weighting mark-weighting.json \
   --scheme scheme-spaced.json \

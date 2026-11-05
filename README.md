@@ -9,8 +9,17 @@ number it cannot reconcile**.
 ## Quick start
 
 **You need:** [DeepSeek Harness](https://www.deepseek.com/en/harness/) — install
-it and open it once — plus Node.js 20+ and `pdftotext` (`brew install poppler`).
-For the Word export only: Python 3 with `python-docx`.
+it and open it once. Nothing else is required for the pack to load.
+
+Two optional extras change what it can do:
+
+| Extra | What it unlocks | Without it |
+|---|---|---|
+| `pdftotext` (Poppler) | Reading mark schemes by column position | The specification still parses; mark weighting does not, so you get no scheme |
+| Python 3 + `python-docx` | The Word export | You get the `.csv` sequence and `REPORT.md` instead |
+
+`pdftotext` is the only one that blocks the workflow, and it is one command for
+whoever looks after the Macs: `brew install poppler`.
 
 1. **Quit DeepSeek Harness.**
 2. **Double-click `install.command`** — or run `node install.mjs`.

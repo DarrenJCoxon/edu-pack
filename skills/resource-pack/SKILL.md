@@ -22,7 +22,7 @@ pointing back at its points.
 ### 1. Briefs
 
 ```bash
-node scripts/briefs.mjs --spec spec-map.json --weighting mark-weighting.json \
+~/.dsh/edu-pack/bin/run scripts/briefs.mjs --spec spec-map.json --weighting mark-weighting.json \
   --scheme scheme-spaced.json --from 1 --to 10 --out briefs
 ```
 

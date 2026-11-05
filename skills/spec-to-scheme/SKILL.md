@@ -13,17 +13,21 @@ caught a real error while this was being built.
 | Input | Format | Notes |
 |---|---|---|
 | Specification | text from `pdftotext -layout` | AQA-style numbering (`4.1.1.1`) parses cleanly; other boards need a parser tweak |
-| Mark schemes | PDF | One per paper. The scheme must state per-question totals and specification references |
+| Mark schemes | PDF | One per paper. Needs `pdftotext` (Poppler) because parsing depends on column positions — see below |
 | Term structure | count of lessons and weeks | Ask the department; do not guess |
 
 ## Run it
 
 ```bash
-node scripts/run.mjs --dir <project> --quiet \
+~/.dsh/edu-pack/bin/run scripts/run.mjs --dir <project> --quiet \
   --spec specification.txt \
   --papers "papers/*MS*.pdf" \
   --pedagogy spaced --lessons 132 --weeks 66
 ```
+
+Use `~/.dsh/edu-pack/bin/run` rather than `node`: it borrows the harness's own
+JavaScript runtime, so the user does not need Node.js installed. Run it from the
+project directory.
 
 **Always pass `--quiet`.** It sends every stage's output to `build.log` instead of
 the conversation, so the teacher sees a result rather than a build.

@@ -1,0 +1,38 @@
+#!/bin/bash
+# Run a script using the harness's own JavaScript runtime.
+#
+# A teacher has DeepSeek Harness. They do not have Node.js, and asking them to
+# install it is where most of them stop. The app ships an Electron runtime that
+# runs Node-compatible scripts when ELECTRON_RUN_AS_NODE is set, so the pack can
+# borrow it and require nothing.
+#
+# Usage:  bin/run scripts/decompose.mjs spec.txt spec-map.json
+
+set -euo pipefail
+
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+APP="/Applications/DeepSeek Harness.app/Contents/MacOS/DeepSeek Harness"
+
+if [ -x "$APP" ]; then
+  exec env ELECTRON_RUN_AS_NODE=1 "$APP" "$@"
+fi
+
+# Fallbacks for a harness installed elsewhere, or a machine that happens to have Node.
+for candidate in \
+  "${HOME}/Applications/DeepSeek Harness.app/Contents/MacOS/DeepSeek Harness" \
+  "/Applications/DeepSeek Harness.app/Contents/MacOS/DeepSeek Harness"; do
+  if [ -x "$candidate" ]; then
+    exec env ELECTRON_RUN_AS_NODE=1 "$candidate" "$@"
+  fi
+done
+
+if command -v node >/dev/null 2>&1; then
+  exec node "$@"
+fi
+
+cat >&2 <<'MESSAGE'
+Could not find DeepSeek Harness, so there is no JavaScript runtime to use.
+
+Install DeepSeek Harness from https://www.deepseek.com/en/harness/ and try again.
+MESSAGE
+exit 1

@@ -71,7 +71,7 @@ if (dryRun) {
 
 // ---- 1. Copy the pack ----------------------------------------------------
 await mkdir(target, { recursive: true });
-for (const entry of ['skills', 'packages']) {
+for (const entry of ['skills', 'packages', 'bin']) {
   await cp(path.join(HERE, entry), path.join(target, entry), {
     recursive: true,
     filter: (source) => !source.includes('node_modules'),
