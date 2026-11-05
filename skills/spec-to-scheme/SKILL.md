@@ -11,17 +11,30 @@ did not ask for.
 ## Two modes
 
 **Plan mode — the default.** Use it when the teacher says "let's work through this
-together", "help me plan", or asks a question about a curriculum map. Do not run
-the pipeline. Hold a conversation: agree the units, the term structure, the lesson
-budget and the pedagogy, and propose a term-by-term map in the reply, in plain
-English. Run the stages only when the teacher asks for the build.
+together", "help me plan", or asks for a curriculum map.
 
-**Build mode.** Use it when the teacher says "build it" or "run it", or has already
-agreed the inputs. Run the three stages and report as set out below.
+**The first reply contains questions only.** No table, no proposed texts, no map,
+no files. A request to work together is a request for a conversation; a finished
+plan in the first reply ends that conversation before the teacher has stated a
+preference, and leaves them correcting work rather than shaping it.
 
-Running the pipeline during a planning conversation is the most common failure. It
-takes minutes, it writes files nobody asked for, and it answers a question the
-teacher had not finished asking.
+Do this in the first reply:
+
+1. Read the specification in the project folder.
+2. If no mark schemes are present, search the web for the past papers for this
+   specification, and note which years you found. Searching is expected: the
+   folder boundary below applies to files on this computer, not to published
+   material.
+3. Ask at most three questions, one line each:
+   - which texts or units the department already teaches
+   - the term structure: number of terms, lessons per week, weeks per term, and
+     which term is for revision
+   - which papers and mark schemes the teacher has locally
+
+Then stop and wait. Propose the map only after the answers arrive.
+
+**Build mode.** Use it when the teacher says "build it" or "run it", or has agreed
+the inputs. Run the three stages and report as set out below.
 
 ### Map and sequence are different outputs
 
@@ -31,10 +44,13 @@ which is required; do not assume the lesson sequence.
 
 ## Stay in the project folder
 
-Work only inside the project directory the teacher opened. Do not read, search or
-move outside it — not Downloads, not Documents, not the home directory — even when a required
-file is absent. If an input is missing, say what is missing and
-ask for it, in one question.
+Work only inside the project directory the teacher opened. Do not read other
+directories — not Downloads, not Documents, not the home directory — even when a
+required file is absent. If an input is missing, say what is missing and ask for
+it, in one question.
+
+This applies to files on this computer. It does not apply to the web: searching
+for published specifications, past papers and mark schemes is part of the work.
 
 ## Before running a stage
 
