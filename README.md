@@ -36,20 +36,21 @@ the Windows installer, expect to report what happens.
    not signed by an identified developer, and macOS no longer offers a way past
    that by right-clicking. Choose one:
 
-   *Terminal, one line* — open Terminal, paste this, press Return, then
-   double-click the installer:
-
-   ```bash
-   xattr -d com.apple.quarantine ~/Downloads/edu-pack*/install.command
-   ```
-
-   *Or ask DeepSeek Harness to do it* — start a new chat and paste:
+   *Ask DeepSeek Harness to install it* — start a new chat and paste:
 
    > Install the edu-pack skills from the zip in my Downloads folder.
 
    DeepSeek Harness runs commands directly rather than through Finder, so the
    security check does not apply. It may ask for permission to write into
-   `~/.dsh`.
+   `~/.dsh`. This is the method that requires no Terminal and no security
+   settings.
+
+   *Or one line in Terminal* — open Terminal, paste this, press Return, then
+   double-click the installer:
+
+   ```bash
+   xattr -d com.apple.quarantine ~/Downloads/edu-pack*/install.command
+   ```
 
 5. **Open DeepSeek Harness again, start a new chat, and type `/`.**
 
