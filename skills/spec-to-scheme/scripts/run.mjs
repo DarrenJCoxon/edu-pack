@@ -18,6 +18,7 @@
  */
 
 import { execFileSync } from 'node:child_process';
+import { openSync, closeSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -36,11 +37,19 @@ for (let i = 2; i < process.argv.length; i += 1) {
 }
 
 const dir = path.resolve(args.dir ?? '.');
+
+// A teacher should see the result, not the machinery. In quiet mode every stage's
+// chatter goes to build.log instead of the conversation, and this script prints
+// three lines at the end.
+const quiet = args.quiet === true;
+const logPath = path.join(dir, 'build.log');
+const logFd = quiet ? openSync(logPath, 'w') : null;
+
 const stage = (name, argv) => {
-  process.stdout.write(`\n── ${name} ${'─'.repeat(Math.max(0, 58 - name.length))}\n`);
+  if (!quiet) process.stdout.write(`\n── ${name} ${'─'.repeat(Math.max(0, 58 - name.length))}\n`);
   execFileSync(process.execPath, [path.join(HERE, `${name}.mjs`), ...argv], {
     cwd: dir,
-    stdio: 'inherit',
+    stdio: quiet ? ['ignore', logFd, logFd] : 'inherit',
   });
 };
 
@@ -57,7 +66,7 @@ const totalPoints = topics.reduce((n, t) => n + t.points.length, 0);
 const mapGate = verifySpecMap('spec map', topics, totalPoints);
 mapGate.assert('the specification produced more than zero points', totalPoints > 0, `${totalPoints} points`);
 mapGate.require();
-console.log(`\n  gate passed: ${totalPoints} points across ${topics.length} topics`);
+if (!quiet) console.log(`\n  gate passed: ${totalPoints} points across ${topics.length} topics`);
 
 // ---- Stage 2: weight -----------------------------------------------------
 if (!papers) {
@@ -73,7 +82,7 @@ const weightGate = new Gate('mark weighting');
 weightGate.reconciled('marks reconcile to the paper totals', unitMarks, 200, 1);
 weightGate.assert('every paper states a total', (weighting.papers ?? []).every((p) => p.total > 0), 'ok');
 weightGate.require();
-console.log(`\n  gate passed: ${Math.round(unitMarks)} marks attributed`);
+if (!quiet) console.log(`\n  gate passed: ${Math.round(unitMarks)} marks attributed`);
 
 // ---- Stage 3: sequence ---------------------------------------------------
 const seqArgs = ['--lessons', String(args.lessons ?? 132), '--weeks', String(args.weeks ?? 66)];
@@ -92,8 +101,14 @@ if (!args.compare) {
     actualMarks: scheme.lessons.reduce((n, l) => n + (l.marksAtStake ?? 0), 0),
   });
   gate.require();
-  console.log(`\n  gate passed: ${scheme.lessons.length} lessons, every point taught once`);
+  if (!quiet) console.log(`\n  gate passed: ${scheme.lessons.length} lessons, every point taught once`);
 }
 
-console.log('\nDone. Outputs: spec-map.json, mark-weighting.json, scheme-*.json');
-console.log('Next: run the coverage-matrix skill to check taught vs examined.');
+if (logFd !== null) closeSync(logFd);
+
+if (quiet) {
+  console.log(`Built the scheme. Details in build.log; the sequence is scheme-*.csv.`);
+} else {
+  console.log('\nDone. Outputs: spec-map.json, mark-weighting.json, scheme-*.json');
+  console.log('Next: run the coverage-matrix skill to check taught vs examined.');
+}

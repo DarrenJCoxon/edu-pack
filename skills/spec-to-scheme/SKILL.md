@@ -19,14 +19,64 @@ caught a real error while this was being built.
 ## Run it
 
 ```bash
-node scripts/run.mjs --dir <project> \
+node scripts/run.mjs --dir <project> --quiet \
   --spec specification.txt \
   --papers "papers/*MS*.pdf" \
   --pedagogy spaced --lessons 132 --weeks 66
 ```
 
+**Always pass `--quiet`.** It sends every stage's output to `build.log` instead of
+the conversation, so the teacher sees a result rather than a build.
+
 Add `--compare` instead of `--pedagogy` to build all four structures and print
 their measured differences.
+
+## What to report
+
+The person reading is a teacher or head of department, not a developer. They want
+the scheme and the one or two things that might surprise them. Report **at most**
+this, in this order, and then stop:
+
+1. **One line** — how many lessons over how many weeks, how many specification
+   points, all taught once.
+2. **The files** — the `.csv` sequence and `REPORT.md`.
+3. **Up to three "check before you adopt" items**, in plain English.
+
+A good final message looks like this:
+
+> Done — 132 lessons over 66 weeks, covering all 97 specification points once each.
+>
+> Files: `scheme-spaced.csv` (the sequence) and `REPORT.md` (how it was built).
+>
+> Three things to check before you adopt it:
+> - Bioenergetics gets 31 lessons for 6 points and Ecology 12 for 21. That comes
+>   from one year's papers; another year may rank them differently.
+> - 15 of the 24 topics get no retrieval lesson under this structure.
+> - All six points of one topic are taught in a single lesson.
+
+### Do not put in the reply
+
+- gate names, pass/fail tables, or "all three gates passed"
+- parser mechanics — column positions, question numbering, PDF layout, "level of
+  response questions", anything about how a fix was made
+- unit-level percentages, sensitivity tables, year-on-year comparisons
+- internal vocabulary: gate, reconcile, partition, denominator, synthesised,
+  distribution, breadth metric
+- an inventory of every JSON file produced
+- "say which and I'll run it"
+
+That material is not lost — write it to `REPORT.md` under **How this was built**
+and mention that section once, in one clause.
+
+### When a check fails
+
+Say in one sentence what did not add up and what you need, in these terms:
+
+> Paper 2's marks only add up to 94 of 100, so I have stopped before building the
+> scheme. This usually means the mark scheme uses a layout the parser does not
+> recognise — can you check it, or send a different year's papers?
+
+No stack traces, no diagnosis of the parser, no offer to "patch locally".
 
 ## The three gates
 

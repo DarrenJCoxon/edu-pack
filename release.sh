@@ -54,9 +54,16 @@ gh release create "v${VERSION}" "$ZIP" \
   --title "v${VERSION}" \
   --notes "${NOTES}
 
-**Download \`$(basename "$ZIP")\` below**, unzip it, quit DeepSeek Harness, then double-click \`install.command\`. On macOS the first double-click is blocked: right-click → Open.
+## Install
 
-Start a **new** conversation afterwards and type \`/\` to see the three skills.
+1. **You need DeepSeek Harness** — install it first if you have not: <https://www.deepseek.com/en/harness/>. Open it once, then quit it.
+2. **Download \`$(basename "$ZIP")\` below** and unzip it.
+3. **Double-click \`install.command\`.** On macOS the first double-click is blocked: right-click → Open.
+4. **Reopen DeepSeek Harness**, start a **new** conversation, and type \`/\` — you should see \`spec-to-scheme\`, \`coverage-matrix\` and \`resource-pack\`.
+
+You also need Node.js 20+ and \`pdftotext\` (\`brew install poppler\`). Python 3 with \`python-docx\` is only for the Word export.
+
+**Full instructions, troubleshooting and uninstalling:** <https://github.com/DarrenJCoxon/edu-pack#readme>
 
 Tested against DeepSeek Harness 0.2.1-rc.5 on macOS. Does not include exam board specifications, past papers or mark schemes."
 
